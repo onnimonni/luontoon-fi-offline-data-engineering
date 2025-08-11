@@ -1,5 +1,5 @@
 # luontoon.fi offline
-Download (luontoon.fi)[https://luontoon.fi] outdoor tracks and amenities data to offline to data engineer your outdoor activities like a proper computer nerd 🤓 📈
+Download [luontoon.fi](https://luontoon.fi) outdoor tracks and amenities data to offline to data engineer your outdoor activities like a proper computer nerd 🤓 📈
 
 > [!CAUTION]
 > **⚠️ NOTE:** According to the T&C you can only download the luontoon.fi data for your personal, non-commercial use. See more here: https://www.luontoon.fi/fi/kayttoehdot
