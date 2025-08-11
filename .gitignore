@@ -1,0 +1,7 @@
+.DS_store
+
+# Don't store the temporary downloaded files
+geo
+
+# Don't store the end result since we don't yet have permission from Metsähallitus to share the data
+data
