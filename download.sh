@@ -4,21 +4,8 @@ set -e
 
 echo "Downloading luontoon.fi data to offline..."
 
-# Download the data json definitions
-curl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' \
-  --referer 'https://www.luontoon.fi/fi/lajit/retkeily-ja-ulkoilu/kartta' \
-  -H 'luontoon-geo-auth: e0jf489hp3gh585793hgfdb10' \
-  --parallel \
-  --remove-on-error \
-  --create-dirs \
-  --skip-existing \
-  --output "geo/tiles/#1.json" \
-  'https://www.luontoon.fi/geo/tiles/{public.restrictedareas_details_view,public.destinations_view,public.destinations_details_view,public.all_lines_view,public.all_lines_details_view,public.amenities_view,public.amenities_cluster_summary_view}.json'
-
 # Download the vector tiles (.pbf) for zoom level 4
-curl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' \
-  --referer 'https://www.luontoon.fi/fi/lajit/retkeily-ja-ulkoilu/kartta' \
-  -H 'luontoon-geo-auth: e0jf489hp3gh585793hgfdb10' \
+curl --user-agent 'https://github.com/onnimonni/luontoon-fi-offline-data-engineering' \
   --parallel \
   --remove-on-error \
   --create-dirs \
@@ -26,10 +13,8 @@ curl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/5
   --output "geo/tiles/#1/#2/#3/#4.pbf" \
   'https://www.luontoon.fi/geo/tiles/{public.restrictedareas_details_view,public.destinations_view,public.destinations_details_view,public.amenities_cluster_summary_view}/{4}/[8-9]/[3-4].pbf'
 
-# Download some files with zoom level 7
-curl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' \
-  --referer 'https://www.luontoon.fi/fi/lajit/retkeily-ja-ulkoilu/kartta' \
-  -H 'luontoon-geo-auth: e0jf489hp3gh585793hgfdb10' \
+# Download some files with zoom level 8
+curl --user-agent 'https://github.com/onnimonni/luontoon-fi-offline-data-engineering' \
   --parallel \
   --remove-on-error \
   --fail \
@@ -40,7 +25,8 @@ curl --user-agent 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/5
 
 echo "Converting all MapBox vector files to parquet files..."
 
-# Find non-empty .pbf files and run duckdb describe command for each
+# FIXME: duckdb doesn't allow reading multiple .pbf files simultanously so we need hacks like this
+# Find non-empty .pbf files and convert them to .parquet files in groups of 10 in parallel
 find . -type f -name "*.pbf" -size +0 -print0 | \
     xargs -0 -n10 -P $(sysctl -n hw.ncpu) sh -c '
     for file in "$@"; do
@@ -92,5 +78,6 @@ echo "All data has been created successfully in the 'data' directory."
 echo "🦆📊 You can now query the data using duckdb like this:"
 
 for file in data/*.parquet; do
+    echo "SELECT '$file' as dataset_name, COUNT(*) as row_count FROM '$file';"
     duckdb -c "SELECT '$file' as dataset_name, COUNT(*) as row_count FROM '$file'"
 done
