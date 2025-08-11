@@ -117,7 +117,7 @@ $ du -sh {data,geo}
 379M	geo
 ```
 
-My recommendation is to delete the `geo` folder afterwise because everything exists in `data` already in much better compressed way.
+My recommendation is to delete the `geo` folder afterwise because everything exists in those ~22Mb `data/*.parquet` files already in much better compressed way.
 
 ## Playing with the available data locally
 ### Seeing the source of the information
