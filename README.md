@@ -22,16 +22,16 @@ Luontoon.fi data is stored in mapbox vector tiles (`.pbf`) with zoom levels vary
 If the `.pbf` is too big in size it gets corrupted somehow and doesn't work. Because of this certain datasets have to be downloaded on smaller zoom levels.
 
 These can be downloaded with zoom level 4:
-* public.restrictedareas_details_view
-* public.destinations_view
-* public.destinations_details_view
-* public.amenities_cluster_summary_view
+* (public.restrictedareas_details_view)[https://luontoon.fi/geo/tiles/public.restrictedareas_details_view.json]
+* (public.destinations_view)[https://luontoon.fi/geo/tiles/public.destinations_view.json]
+* (public.destinations_details_view)[https://luontoon.fi/geo/tiles/public.destinations_details_view.json]
+* (public.amenities_cluster_summary_view)[https://luontoon.fi/geo/tiles/public.amenities_cluster_summary_view.json]
 
-These on the other hand have to be downloaded with zoom level 8:
-* public.restrictedareas_details_view
-* public.destinations_view
-* public.destinations_details_view
-* public.amenities_cluster_summary_view
+These on the other hand have to be downloaded with zoom level 8 because the larger zoom levels produce too big files (> 10mb) and then they seem to be broken:
+* (public.restrictedareas_details_view)[https://luontoon.fi/geo/tiles/public.restrictedareas_details_view.json]
+* (public.destinations_view)[https://luontoon.fi/geo/tiles/public.destinations_view.json]
+* (public.destinations_details_view)[https://luontoon.fi/geo/tiles/public.destinations_details_view.json]
+* (public.amenities_cluster_summary_view)[https://luontoon.fi/geo/tiles/public.amenities_cluster_summary_view.json]
 
 The files are available in a following structure (`...` means many more files exist but they are hidden):
 ```
